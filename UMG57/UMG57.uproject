@@ -1,0 +1,1 @@
+{"FileVersion":3,"EngineAssociation":"5.7","Modules":[{"Name":"UMG57","Type":"Runtime","LoadingPhase":"Default"},{"Name":"UMG57Editor","Type":"Editor","LoadingPhase":"Default"}],"Plugins":[{"Name":"PythonScriptPlugin","Enabled":true},{"Name":"EditorScriptingUtilities","Enabled":true}]}

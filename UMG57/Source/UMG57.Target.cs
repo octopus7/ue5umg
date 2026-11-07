@@ -1,0 +1,1 @@
+using UnrealBuildTool; using System.Collections.Generic; public class UMG57Target:TargetRules { public UMG57Target(TargetInfo T):base(T) { Type=TargetType.Game; DefaultBuildSettings=BuildSettingsVersion.V6; ExtraModuleNames.Add("UMG57"); } }
