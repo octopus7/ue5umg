@@ -14,5 +14,6 @@ public:
     virtual void NativeDestruct() override;
 protected:
     UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> CloseButton;
+    UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> DismissButton;
     UFUNCTION() void ClosePopup();
 };

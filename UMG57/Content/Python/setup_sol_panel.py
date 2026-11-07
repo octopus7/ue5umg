@@ -1,7 +1,7 @@
 # Model: GPT-6.1 Sol; reasoning: Medium
 import unreal
 assert unreal.GenerateSolPanelAssets.generate_widgets(), "Sol panel WBP generation failed"
-for name in ("Main", "Popup"):
+for name in ("Main", "Popup", "SliderPopup"):
     asset = unreal.load_asset("/Game/UI/Sol/WBP_" + name + "_GPT61Sol")
     assert asset is not None
     unreal.BlueprintEditorLibrary.compile_blueprint(asset)

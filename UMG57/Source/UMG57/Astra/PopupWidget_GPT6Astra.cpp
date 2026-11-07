@@ -6,6 +6,7 @@ void UPopupWidget_GPT6Astra::NativeConstruct()
 {
     Super::NativeConstruct();
     CloseButton->OnClicked.AddUniqueDynamic(this, &ThisClass::ClosePopup);
+    DismissButton->OnClicked.AddUniqueDynamic(this, &ThisClass::ClosePopup);
 }
 
 void UPopupWidget_GPT6Astra::ClosePopup()
@@ -17,5 +18,6 @@ void UPopupWidget_GPT6Astra::ClosePopup()
 void UPopupWidget_GPT6Astra::NativeDestruct()
 {
     CloseButton->OnClicked.RemoveDynamic(this, &ThisClass::ClosePopup);
+    DismissButton->OnClicked.RemoveDynamic(this, &ThisClass::ClosePopup);
     Super::NativeDestruct();
 }

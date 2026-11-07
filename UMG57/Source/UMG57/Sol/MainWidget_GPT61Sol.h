@@ -12,7 +12,13 @@ public:
     virtual void NativeConstruct() override;
     virtual void NativeDestruct() override;
     UFUNCTION(BlueprintCallable, Category="Popup") void OpenPopup();
+    UFUNCTION(BlueprintCallable, Category="Popup") void OpenSliderPopup();
+    UFUNCTION(BlueprintPure, Category="Popup") float GetWarmth() const { return Warmth; }
 protected:
     UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> OpenButton;
+    UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> SliderOpenButton;
     UPROPERTY(Transient) TObjectPtr<UUserWidget> ActivePopup;
+    UPROPERTY(Transient) float Warmth = 0.68f;
+    void OpenVariant(bool Slider);
+    void RememberWarmth(float Value);
 };

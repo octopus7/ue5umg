@@ -1,0 +1,14 @@
+Six concept popup implementation verification
+Date: 2026-11-08 KST
+UE: 5.7.4 / Win64 Development
+Build: UMG57Editor Win64 Development, -NoUBA -CompilerVersion=14.38.33130, exit 0
+Compiler notices: non-preferred MSVC, legacy include order; Sol generator local Name shadows parameter (C4457).
+Asset authoring:
+[2026.11.07-16.29.46:554][  0]LogPython: ALL_CONCEPT_ASSETS_COMPLETE
+[2026.11.07-16.29.46:554][  0]LogInit: Display: Success - 0 error(s), 0 warning(s)
+Automation:
+[2026.11.07-16.30.02:248][600]LogAutomationCommandLine: Display: Found 2 automation tests based on 'UMG57.'
+[2026.11.07-16.30.02:310][603]LogAutomationController: Display: Test Completed. Result={Success} Name={NonModalPanels} Path={UMG57.Models.NonModalPanels}
+[2026.11.07-16.30.02:333][606]LogAutomationController: Display: Test Completed. Result={Success} Name={WarmthState} Path={UMG57.Sol.Concepts.WarmthState}
+[2026.11.07-16.30.02:345][607]LogAutomationCommandLine: Display: **** TEST COMPLETE. EXIT CODE: 0 ****
+Manual: Astra 65 -> drag32 -> right33; Sol68 -> drag21 -> right22; Terra65 -> drag84 -> left79. Values persisted through basic/slider variant replacement and individual Close/reopen. Sol basic could replace only Sol while Astra/Terra sliders remained open.
