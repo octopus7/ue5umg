@@ -1,0 +1,1 @@
+using UnrealBuildTool; public class UMG57:ModuleRules { public UMG57(ReadOnlyTargetRules T):base(T) { PCHUsage=PCHUsageMode.UseExplicitOrSharedPCHs; PublicIncludePaths.Add(ModuleDirectory); PublicDependencyModuleNames.AddRange(new string[]{"Core","CoreUObject","Engine","InputCore","UMG","Slate","SlateCore"}); } }

@@ -1,0 +1,1 @@
+using UnrealBuildTool; using System.Collections.Generic; public class UMG57EditorTarget:TargetRules { public UMG57EditorTarget(TargetInfo T):base(T) { Type=TargetType.Editor; DefaultBuildSettings=BuildSettingsVersion.V6; ExtraModuleNames.AddRange(new string[]{"UMG57","UMG57Editor"}); } } 
