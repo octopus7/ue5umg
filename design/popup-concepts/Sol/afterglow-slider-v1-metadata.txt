@@ -1,0 +1,14 @@
+Concept: Afterglow
+Function: Adjust interior lighting warmth with a horizontal slider, current value 68%.
+Style decision: New independent deep-petrol and amber dark UI; no earlier concept images used as references.
+Design intent: Communicate cool-to-warm direction through endpoint labels and sun icons, distinguish filled amber segment from muted remaining track, and separate the ivory thumb from both. Close action is clearly visible in the footer.
+Prompt design model: GPT-6.1 Sol
+Reasoning effort: Medium
+Image generation tool: built-in image_gen.imagegen
+Image generation model: undisclosed (not exposed by tool)
+Requested size: 1536x1024
+Actual size: 1536x1024, verified from PNG IHDR.
+Output: afterglow-slider-v1.png
+Prompt: afterglow-slider-v1-prompt.txt
+Review: Title, explanation, horizontal track, amber filled segment, one thumb, 68% value and Close button all visible and legible. Thumb is approximately 68% along track. Clear Cool/Warm endpoints. No model name or watermark visible. Card is entirely inside frame. This is a static generated UI concept, not an interactive slider implementation.
+Existing concept preserved. No UE execution, staging or commit.

@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-08",
+  "tool": "built-in image_gen",
+  "image_generation_model": "undisclosed",
+  "prompt_design_models": [
+    "GPT-6 Astra",
+    "GPT-6.1 Sol",
+    "GPT-6.1 Terra"
+  ],
+  "reasoning_effort": "Medium",
+  "images": [
+    {
+      "path": "design/popup-concepts/Astra/ambient-volume-slider.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1521749,
+      "sha256": "0490363388f0b1d9c68d062acdcf949aabbaf0467ae2932f1544313a65c0194b"
+    },
+    {
+      "path": "design/popup-concepts/Astra/observation-journal.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1756273,
+      "sha256": "618e45c27d76b0531d22483d869293943d25c6838a42f83d2a1c69f0557a3059"
+    },
+    {
+      "path": "design/popup-concepts/Sol/afterglow-slider-v1.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1622339,
+      "sha256": "59851ff0ece861ba4f82f223946aa7ff57d6ad3134c816d345d3170669b667a8"
+    },
+    {
+      "path": "design/popup-concepts/Sol/quiet-signal-v1.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1451688,
+      "sha256": "3cf369ccd98c52d31fc68cc2cace1d06b177a5ca435e39bddcafb9414805a0af"
+    },
+    {
+      "path": "design/popup-concepts/Terra/quiet-observatory.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2110910,
+      "sha256": "dfb415afd30335c54b390a3008e9c6f05958c3cb422d3fde76e83f88f887cfca"
+    },
+    {
+      "path": "design/popup-concepts/Terra/rain-room-slider.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2144303,
+      "sha256": "23a2ed7d49c81befa7bfbfdc7516a69cb49f862576f5333537944d2769470ebc"
+    }
+  ]
+}

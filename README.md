@@ -4,5 +4,6 @@ UE 5.7 프로젝트에서 GPT-6 Astra, GPT-6.1 Sol, GPT-6.1 Terra가 작성한 U
 
 - 프로젝트: [UMG57.uproject](UMG57/UMG57.uproject)
 - **[모델별 팝업 구현 비교 분석 보고서 — 실제 실행 캡처 포함](docs/reports/model-popup-comparison.md)**
+- **[모델별 팝업 디자인 이미지 비교 — 자유 디자인 및 수평 슬라이더 시안 6장](docs/reports/popup-design-concepts-comparison.md)**
 
 기본 플레이에서 왼쪽부터 Astra·Sol·Terra 버튼을 사용할 수 있습니다. 각 팝업은 화면의 고유 영역에 열리며, ‘모든 팝업 열기’ 버튼으로 동시에 열 수 있습니다.
