@@ -3,18 +3,22 @@
 #include "Astra/PopupWidget_GPT6Astra.h"
 #include "Components/Button.h"
 #include "GameFramework/PlayerController.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Sol/MainWidget_GPT61Sol.h"
+#include "Terra/MainWidget_GPT61Terra.h"
 
 void UMainWidget_GPT6Astra::NativeConstruct()
 {
     Super::NativeConstruct();
     OpenButton->OnClicked.AddUniqueDynamic(this, &ThisClass::OpenPopup);
+    AllOpenButton->OnClicked.AddUniqueDynamic(this, &ThisClass::OpenAllPopups);
 }
 
 void UMainWidget_GPT6Astra::FocusOpener()
 {
     if (auto* Player = GetOwningPlayer())
     {
-        FInputModeUIOnly Mode;
+        FInputModeGameAndUI Mode;
         Mode.SetWidgetToFocus(OpenButton->TakeWidget());
         Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
         Player->SetInputMode(Mode);
@@ -28,16 +32,23 @@ void UMainWidget_GPT6Astra::OpenPopup()
     ActivePopup = CreateWidget<UPopupWidget_GPT6Astra>(GetOwningPlayer(), PopupClass);
     if (!ActivePopup) return;
     ActivePopup->OnClosed.BindUObject(this, &ThisClass::PopupClosed);
-    OpenButton->SetIsEnabled(false);
     ActivePopup->AddToViewport(100);
-    ActivePopup->ActivateModal();
+}
+
+void UMainWidget_GPT6Astra::OpenAllPopups()
+{
+    OpenPopup();
+    TArray<UUserWidget*> Widgets;
+    UWidgetBlueprintLibrary::GetAllWidgetsOfClass(this, Widgets, UMainWidget_GPT61Sol::StaticClass(), true);
+    for (auto* Widget : Widgets) CastChecked<UMainWidget_GPT61Sol>(Widget)->OpenPopup();
+    Widgets.Reset();
+    UWidgetBlueprintLibrary::GetAllWidgetsOfClass(this, Widgets, UMainWidget_GPT61Terra::StaticClass(), true);
+    for (auto* Widget : Widgets) CastChecked<UMainWidget_GPT61Terra>(Widget)->OpenPopup();
 }
 
 void UMainWidget_GPT6Astra::PopupClosed()
 {
     ActivePopup = nullptr;
-    OpenButton->SetIsEnabled(true);
-    FocusOpener();
 }
 
 void UMainWidget_GPT6Astra::NativeDestruct()
@@ -49,5 +60,6 @@ void UMainWidget_GPT6Astra::NativeDestruct()
         ActivePopup = nullptr;
     }
     OpenButton->OnClicked.RemoveDynamic(this, &ThisClass::OpenPopup);
+    AllOpenButton->OnClicked.RemoveDynamic(this, &ThisClass::OpenAllPopups);
     Super::NativeDestruct();
 }

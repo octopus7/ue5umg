@@ -15,11 +15,13 @@ public:
     virtual void NativeConstruct() override;
     virtual void NativeDestruct() override;
     void FocusOpener();
+    UFUNCTION(BlueprintCallable) void OpenPopup();
+    UFUNCTION() void OpenAllPopups();
 
 protected:
     UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> OpenButton;
+    UPROPERTY(meta=(BindWidget)) TObjectPtr<UButton> AllOpenButton;
     UPROPERTY(EditDefaultsOnly, Category="Popup") TSubclassOf<UPopupWidget_GPT6Astra> PopupClass;
     UPROPERTY(Transient) TObjectPtr<UPopupWidget_GPT6Astra> ActivePopup;
-    UFUNCTION() void OpenPopup();
     void PopupClosed();
 };

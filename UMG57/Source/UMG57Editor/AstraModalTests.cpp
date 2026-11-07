@@ -4,47 +4,68 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/CanvasPanelSlot.h"
+#include "Components/BackgroundBlur.h"
+#include "Components/Border.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FModelButtonsTest, "UMG57.Models.LabeledButtons",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FModelPanelsTest, "UMG57.Models.NonModalPanels",
     EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
-bool FModelButtonsTest::RunTest(const FString& Parameters)
+bool FModelPanelsTest::RunTest(const FString& Parameters)
 {
     const TCHAR* Folders[] = {TEXT("Astra"), TEXT("Sol"), TEXT("Terra")};
     const TCHAR* Suffixes[] = {TEXT("GPT6Astra"), TEXT("GPT61Sol"), TEXT("GPT61Terra")};
-    const TCHAR* Labels[] = {TEXT("Open GPT-6 Astra Popup"), TEXT("Open GPT-6.1 Sol Popup"), TEXT("Open GPT-6.1 Terra Popup")};
     for (int32 Index = 0; Index < 3; ++Index)
     {
-        const FString Path = FString::Printf(TEXT("/Game/UI/%s/WBP_Main_%s"), Folders[Index], Suffixes[Index]);
-        auto* BP = LoadObject<UWidgetBlueprint>(nullptr, *Path);
-        if (!TestNotNull(*Path, BP)) continue;
-        auto* Label = Cast<UTextBlock>(BP->WidgetTree->FindWidget(TEXT("ButtonLabel")));
-        if (TestNotNull(TEXT("Button label exists"), Label)) TestEqual(TEXT("Explicit model label"), Label->GetText().ToString(), FString(Labels[Index]));
-        auto* Button = BP->WidgetTree->FindWidget(TEXT("OpenButton"));
-        auto* Slot = Button ? Cast<UCanvasPanelSlot>(Button->Slot) : nullptr;
-        if (TestNotNull(TEXT("Saved button placement"), Slot)) TestEqual(TEXT("Distinct row"), Slot->GetPosition().Y, (Index - 1) * 90.0);
+        const FString MainPath = FString::Printf(TEXT("/Game/UI/%s/WBP_Main_%s"), Folders[Index], Suffixes[Index]);
+        const FString PopupPath = FString::Printf(TEXT("/Game/UI/%s/WBP_Popup_%s"), Folders[Index], Suffixes[Index]);
+        auto* Main = LoadObject<UWidgetBlueprint>(nullptr, *MainPath);
+        auto* Popup = LoadObject<UWidgetBlueprint>(nullptr, *PopupPath);
+        if (!TestNotNull(*MainPath, Main) || !TestNotNull(*PopupPath, Popup)) continue;
+        auto* Open = Cast<UButton>(Main->WidgetTree->FindWidget(TEXT("OpenButton")));
+        if (TestNotNull(TEXT("Open button"), Open))
+        {
+            auto* Slot = Cast<UCanvasPanelSlot>(Open->Slot);
+            if (TestNotNull(TEXT("Opener canvas slot"), Slot))
+            {
+                TestTrue(TEXT("Opener in model column"), FMath::IsNearlyEqual(Slot->GetAnchors().Minimum.X, (Index+.5)/3, .001));
+                TestEqual(TEXT("Opener row"), Slot->GetPosition().Y, 80.0);
+            }
+        }
+        if (Index == 0) TestNotNull(TEXT("Open all button"), Main->WidgetTree->FindWidget(TEXT("AllOpenButton")));
+        TestNotNull(TEXT("Title"), Cast<UTextBlock>(Popup->WidgetTree->FindWidget(TEXT("Title"))));
+        TestNotNull(TEXT("Body"), Cast<UTextBlock>(Popup->WidgetTree->FindWidget(TEXT("Message"))));
+        TestNotNull(TEXT("Close button"), Cast<UButton>(Popup->WidgetTree->FindWidget(TEXT("CloseButton"))));
+        TestNull(TEXT("No fullscreen backdrop"), Popup->WidgetTree->FindWidget(TEXT("Backdrop")));
+        TestEqual(TEXT("Root allows outside clicks"), Popup->WidgetTree->RootWidget->GetVisibility(), ESlateVisibility::SelfHitTestInvisible);
+        TArray<UWidget*> Widgets; Popup->WidgetTree->GetAllWidgets(Widgets);
+        UBackgroundBlur* Blur = nullptr;
+        UBorder* Surface = nullptr;
+        for (auto* Widget : Widgets)
+        {
+            TestTrue(TEXT("Saved widget GUID"), Popup->WidgetVariableNameToGuidMap.Contains(Widget->GetFName()));
+            if (auto* B = Cast<UBackgroundBlur>(Widget)) Blur=B;
+            if (auto* B = Cast<UBorder>(Widget)) Surface=B;
+        }
+        if (TestNotNull(TEXT("Background blur"), Blur))
+        {
+            TestEqual(TEXT("Blur strength"), Blur->GetBlurStrength(), 8.f);
+            TestTrue(TEXT("Rounded blur"), Blur->GetCornerRadius().Equals(FVector4(20,20,20,20)));
+            auto* Slot = Cast<UCanvasPanelSlot>(Blur->Slot);
+            if (TestNotNull(TEXT("Panel canvas slot"), Slot))
+            {
+                TestTrue(TEXT("Panel left boundary"), FMath::IsNearlyEqual(Slot->GetAnchors().Minimum.X, Index/3.0, .001));
+                TestTrue(TEXT("Panel right boundary"), FMath::IsNearlyEqual(Slot->GetAnchors().Maximum.X, (Index+1)/3.0, .001));
+            }
+        }
+        if (TestNotNull(TEXT("Translucent surface"), Surface))
+        {
+            const auto& Brush = Surface->Background;
+            TestEqual(TEXT("Rounded box"), Brush.DrawAs.GetValue(), ESlateBrushDrawType::RoundedBox);
+            TestTrue(TEXT("Fixed corner radius"), Brush.OutlineSettings.CornerRadii.Equals(FVector4(20,20,20,20)));
+            TestTrue(TEXT("Translucent tint"), Brush.TintColor.GetSpecifiedColor().A > 0 && Brush.TintColor.GetSpecifiedColor().A < 1);
+        }
     }
-    return true;
-}
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAstraAssetsTest, "UMG57.Astra.SavedWidgetTrees",
-    EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
-
-bool FAstraAssetsTest::RunTest(const FString& Parameters)
-{
-    auto* Main = LoadObject<UWidgetBlueprint>(nullptr, TEXT("/Game/UI/Astra/WBP_Main_GPT6Astra.WBP_Main_GPT6Astra"));
-    auto* Popup = LoadObject<UWidgetBlueprint>(nullptr, TEXT("/Game/UI/Astra/WBP_Popup_GPT6Astra.WBP_Popup_GPT6Astra"));
-    if (!TestNotNull(TEXT("Saved main blueprint"), Main) || !TestNotNull(TEXT("Saved popup blueprint"), Popup)) return false;
-    TestNotNull(TEXT("Editable main root"), Main->WidgetTree->RootWidget.Get());
-    TestNotNull(TEXT("Editable popup root"), Popup->WidgetTree->RootWidget.Get());
-    TestNotNull(TEXT("Bound opener"), Cast<UButton>(Main->WidgetTree->FindWidget(TEXT("OpenButton"))));
-    TestNotNull(TEXT("Bound closer"), Cast<UButton>(Popup->WidgetTree->FindWidget(TEXT("CloseButton"))));
-    auto* Message = Cast<UTextBlock>(Popup->WidgetTree->FindWidget(TEXT("Message")));
-    if (TestNotNull(TEXT("Saved message"), Message)) TestFalse(TEXT("Nonempty message"), Message->GetText().IsEmpty());
-    TestNotNull(TEXT("Full-screen backdrop"), Popup->WidgetTree->FindWidget(TEXT("Backdrop")));
-    TestEqual(TEXT("Main parent"), Main->ParentClass->GetName(), FString(TEXT("MainWidget_GPT6Astra")));
-    TestEqual(TEXT("Popup parent"), Popup->ParentClass->GetName(), FString(TEXT("PopupWidget_GPT6Astra")));
     return true;
 }
 #endif
