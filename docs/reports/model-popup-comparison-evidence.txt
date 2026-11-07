@@ -1,0 +1,20 @@
+Model popup comparison validation evidence
+Report date: 2026-11-08 Asia/Seoul
+Implementation commit: 7c231a09c1ddbc4f0db8d3fbbef0aa99fedeb6bd
+Engine: UE 5.7.4; requested game viewport: 1600x1000; captured JPEGs: 802x530
+The following engine log timestamps are UTC.
+
+[2026.11.07-15.52.32:807][604]LogAutomationController: Display: Test Completed. Result={Success} Name={NonModalPanels} Path={UMG57.Models.NonModalPanels}
+[2026.11.07-15.52.32:815][605]LogAutomationCommandLine: Display: **** TEST COMPLETE. EXIT CODE: 0 ****
+
+Capture source: Windows Computer Use game-window screenshots, unedited JPEG data.
+Capture session: ComparisonCapture.log (local Saved directory; not committed).
+Capture states: all panels; Astra only; Sol only; Terra only.
+UI code/assets unchanged during report capture.
+Existing local level lighting and DefaultInput.ini changes excluded from report commit.
+
+SHA256:
+791C33C7EE7DC5CEFF62ABECFEE397C211A3BD18839B9F783F876457CEBA5BB5  01-all-panels.jpg
+AE767E5457D94E84BFB3843F20EB511A6E69FFE648A9B1B340C1BA2FD5B77BFC  02-astra-only.jpg
+6A4EAB936C1920165CB1F5C09A29EFAF40783FF0A5F624EC7FD348C5F0CE4BE8  03-sol-only.jpg
+84E99F35BCB758EF123D4962ABEB35840DA712BA5C86933DFB3449E845746B5C  04-terra-only.jpg
